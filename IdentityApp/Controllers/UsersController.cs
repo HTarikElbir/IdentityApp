@@ -102,8 +102,16 @@ namespace IdentityApp.Controllers
                         await _userManager.RemovePasswordAsync(user);
                         await _userManager.AddPasswordAsync(user, model.Password);
                     }
+
                     if (result.Succeeded)
                     {
+                        await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+
+                        if (model.SelectedRoles != null)
+                        {
+                            await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+                        }
+
                         return RedirectToAction("Index");
                     }
 
