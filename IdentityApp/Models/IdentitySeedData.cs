@@ -6,7 +6,7 @@ namespace IdentityApp.Models
     public class IdentitySeedData
     {
         // Constants for the admin user credentials
-        private const string adminUser = "Admin";
+        private const string adminUser = "admin";
         // Constants for the admin password
         private const string adminPassword = "Admin@123";
 
@@ -22,14 +22,15 @@ namespace IdentityApp.Models
             }
 
             
-            var userManager = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<UserManager<AppUser>>();
             
             var user = await userManager.FindByNameAsync(adminUser);
             
             if(user == null)
             {
-                user = new IdentityUser
+                user = new AppUser
                 {
+                    FullName = "LeBron James",
                     UserName = adminUser,
                     Email = "info@lebronjames.com",
                     PhoneNumber = "1234567890",

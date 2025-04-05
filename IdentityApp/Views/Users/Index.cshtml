@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IdentityUser>
+﻿@model IEnumerable<AppUser>
 
 <a href="/Users/Create" class="btn btn-primary mb-3">Create User</a>
 
@@ -6,7 +6,7 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
+            <th>FullName</th>
             <th>Email</th>
             <th></th>
         </tr>
@@ -16,7 +16,7 @@
         {
             <tr>
                 <td>@user.Id</td>
-                <td>@user.UserName</td>
+                <td>@user.FullName</td>
                 <td>@user.Email</td>
                 <td>
                     <a href="" class="btn btn-primary btn-sm">Edit</a>

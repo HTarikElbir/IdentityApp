@@ -12,7 +12,7 @@ builder.Services.AddDbContext<IdentityContext>(
     options => options.UseSqlite(builder.Configuration["ConnectionStrings:SQLite_Connection"]));
 
 // Register Identity services
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<IdentityContext>();
 
 // Configure Identity options
