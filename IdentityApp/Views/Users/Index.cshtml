@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AppUser>
 
-<a href="/Users/Create" class="btn btn-primary mb-3">Create User</a>
+<a asp-action="Create" class="btn btn-primary mb-3">Create User</a>
 
 <table class="table table-sm table-bordered">
     <thead>
@@ -12,6 +12,10 @@
         </tr>
     </thead>
     <tbody>
+        @if (Model.Count() == 0)
+        {
+            <tr><td colspan="4" class="text-center">User not available</td></tr>
+        }
         @foreach(var user in Model)
         {
             <tr>
