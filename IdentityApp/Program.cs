@@ -15,6 +15,21 @@ builder.Services.AddDbContext<IdentityContext>(
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>();
 
+// Configure Identity options
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;  
+    options.Password.RequireLowercase = false;
+    // User settings
+    options.User.RequireUniqueEmail = true;
+    // Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+});
 
 var app = builder.Build();
 
