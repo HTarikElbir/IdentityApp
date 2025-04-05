@@ -34,9 +34,10 @@ namespace IdentityApp.Models
                     Email = "info@lebronjames.com",
                     PhoneNumber = "1234567890",
                 };
+                // Create the user if it doesn't exist
+                await userManager.CreateAsync(user, adminPassword);
             }
-            // Create the user if it doesn't exist
-            await userManager.CreateAsync(user, adminPassword);
+            
         }
     }
 }
