@@ -13,7 +13,7 @@ namespace IdentityApp.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return View(_roleManager.Roles);
         }
         public IActionResult Create()
         {
@@ -35,7 +35,7 @@ namespace IdentityApp.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-                i
+                
             }
 
             return View(role);
