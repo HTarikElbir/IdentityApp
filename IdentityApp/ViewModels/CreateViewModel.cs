@@ -8,6 +8,10 @@ namespace IdentityApp.ViewModels
         public string FullName { get; set; } = string.Empty;
 
         [Required]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Username must be between 5 and 20 characters.")]
+        public string UserName { get; set; } = string.Empty;
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
