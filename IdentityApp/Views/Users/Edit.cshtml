@@ -35,7 +35,10 @@
             {
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="SelectedRoles" value="@role" id="@role"
-                    @(Model.SelectedRoles!.Any(r => r == role) ? "checked" : "")>
+                    @if(Model.SelectedRoles != null)
+                    {
+                        @(Model.SelectedRoles!.Any(r => r == role) ? "checked" : "")
+                    }>
                     <label for="@role" class="form-check-label">@role</label>
                 </div>
             }
