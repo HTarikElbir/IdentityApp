@@ -13,7 +13,8 @@ builder.Services.AddDbContext<IdentityContext>(
 
 // Register Identity services
 builder.Services.AddIdentity<AppUser, AppRole>()
-    .AddEntityFrameworkStores<IdentityContext>();
+    .AddEntityFrameworkStores<IdentityContext>()
+    .AddDefaultTokenProviders();
 
 // Configure Identity options
 builder.Services.Configure<IdentityOptions>(options =>
@@ -29,6 +30,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Lockout settings
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
+    // SignIn settings
+    options.SignIn.RequireConfirmedEmail = true;
 });
 
 // Configure cookie settings

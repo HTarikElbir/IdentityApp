@@ -23,38 +23,6 @@ namespace IdentityApp.Controllers
             return View(_userManager.Users);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new AppUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    FullName = model.FullName,
-                };
-
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                foreach (IdentityError error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-            }
-            return View(model);
-        }
-
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)

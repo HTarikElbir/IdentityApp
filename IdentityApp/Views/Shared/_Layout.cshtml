@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@if(TempData["Message"] != null){
+    <div class="alert alert-warning" role="alert">
+        @TempData["Message"]
+    </div>
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
