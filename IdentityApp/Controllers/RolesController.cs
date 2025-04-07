@@ -15,6 +15,7 @@ namespace IdentityApp.Controllers
         }
         public IActionResult Index()
         {
+            
             return View(_roleManager.Roles);
         }
         public IActionResult Create()
@@ -43,9 +44,9 @@ namespace IdentityApp.Controllers
             return View(role);
         }
 
-        public async Task<IActionResult> Edit(string ıd)
+        public async Task<IActionResult> Edit(string Id)
         {
-            var role = await _roleManager.FindByIdAsync(ıd);
+            var role = await _roleManager.FindByIdAsync(Id);
             if (role != null && role.Name != null)
             { 
                 ViewBag.Users = await _userManager.GetUsersInRoleAsync(role.Name);

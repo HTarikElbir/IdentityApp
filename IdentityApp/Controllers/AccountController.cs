@@ -103,7 +103,7 @@ namespace IdentityApp.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var url = Url.Action("ConfirmEmail", "Account", new { user.Id, token });
 
-                    await _emailSender.SendEmailAsync(user.Email, "Confirm", "Test");
+                    //await _emailSender.SendEmailAsync(user.Email, "Confirm", "Test");
                     TempData["Message"] = "Registration successful. Please check your email to confirm your account.";
                     return RedirectToAction("Login", "Account");
                 }
@@ -143,6 +143,12 @@ namespace IdentityApp.Controllers
             }
             TempData["Message"] = "User not found.";
             return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
         }
     }
 }

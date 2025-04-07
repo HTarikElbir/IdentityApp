@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
 
@@ -20,6 +22,7 @@ namespace IdentityApp.Controllers
 
         public IActionResult Index()
         {
+            
             return View(_userManager.Users);
         }
 
