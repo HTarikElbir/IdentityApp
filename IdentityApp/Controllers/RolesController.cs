@@ -43,9 +43,9 @@ namespace IdentityApp.Controllers
             return View(role);
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string ıd)
         {
-            var role = await _roleManager.FindByIdAsync(id);
+            var role = await _roleManager.FindByIdAsync(ıd);
             if (role != null && role.Name != null)
             { 
                 ViewBag.Users = await _userManager.GetUsersInRoleAsync(role.Name);

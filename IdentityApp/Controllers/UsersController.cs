@@ -23,13 +23,13 @@ namespace IdentityApp.Controllers
             return View(_userManager.Users);
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return RedirectToAction("Index");
             }
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(Id);
 
             if (user != null)
             {
@@ -47,9 +47,9 @@ namespace IdentityApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, EditViewModel model)
+        public async Task<IActionResult> Edit(string Id, EditViewModel model)
         {
-            if (id != model.Id)
+            if (Id != model.Id)
             {
                 return RedirectToAction("Index");
             }
@@ -93,11 +93,11 @@ namespace IdentityApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string Id)
         {
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(Id))
             {
-                var user = await _userManager.FindByIdAsync(id);
+                var user = await _userManager.FindByIdAsync(Id);
                 if (user != null)
                 {
                     var result = await _userManager.DeleteAsync(user);

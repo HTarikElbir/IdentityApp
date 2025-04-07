@@ -8,18 +8,21 @@ namespace IdentityApp.Controllers
     public class AccountController : Controller
     {
         
-        private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<AppRole> _roleManager;
-        private readonly SignInManager<AppUser> _signInManager;
-
-        // Constructor
-        public AccountController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager) 
+        private UserManager<AppUser> _userManager;
+        private RoleManager<AppRole> _roleManager;
+        private SignInManager<AppUser> _signInManager;
+        private IEmailSender _emailSender;
+        public AccountController(
+            UserManager<AppUser> userManager, 
+            RoleManager<AppRole> roleManager,
+            SignInManager<AppUser> signInManager,
+            IEmailSender emailSender)
         {
-            _roleManager = roleManager;
             _userManager = userManager;
+            _roleManager = roleManager; 
             _signInManager = signInManager;
+            _emailSender = emailSender;
         }
-
         // Login action
         public IActionResult Login()
         {
@@ -98,8 +101,9 @@ namespace IdentityApp.Controllers
                 {
                     // Send confirmation email
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token= token });
+                    var url = Url.Action("ConfirmEmail", "Account", new { user.Id, token });
 
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm", "Test");
                     TempData["Message"] = "Registration successful. Please check your email to confirm your account.";
                     return RedirectToAction("Login", "Account");
                 }
@@ -112,15 +116,15 @@ namespace IdentityApp.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string Id, string token)
         {
-            if(userId == null || token == null)
+            if(Id == null || token == null)
             {
                 TempData["Message"] = "Invalid token information.";
                 return View();
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(Id);
 
             if (user != null)
             {
