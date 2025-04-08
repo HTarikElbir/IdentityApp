@@ -7,22 +7,24 @@ namespace IdentityApp.Controllers
 {
     public class AccountController : Controller
     {
-        
+
         private UserManager<AppUser> _userManager;
         private RoleManager<AppRole> _roleManager;
         private SignInManager<AppUser> _signInManager;
         private IEmailSender _emailSender;
+
         public AccountController(
-            UserManager<AppUser> userManager, 
+            UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
             SignInManager<AppUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
-            _roleManager = roleManager; 
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
         }
+
         // Login action
         public IActionResult Login()
         {
@@ -40,9 +42,9 @@ namespace IdentityApp.Controllers
                 if (user != null)
                 {
                     await _signInManager.SignOutAsync();
-                    
-                   
-                    if(!await _userManager.IsEmailConfirmedAsync(user))
+
+
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
                     {
                         ModelState.AddModelError("", "Email is not confirmed");
                         return View(model);
@@ -56,12 +58,14 @@ namespace IdentityApp.Controllers
                         await _userManager.SetLockoutEndDateAsync(user, null);
 
                         return RedirectToAction("Index", "Home");
-                    }else if (result.IsLockedOut)
+                    }
+                    else if (result.IsLockedOut)
                     {
                         var lockoutDate = await _userManager.GetLockoutEndDateAsync(user);
                         var timeLeft = lockoutDate.Value - DateTime.UtcNow;
 
-                        ModelState.AddModelError("", $"Your account is locked, Please try again after {timeLeft.Minutes} minutes");
+                        ModelState.AddModelError("",
+                            $"Your account is locked, Please try again after {timeLeft.Minutes} minutes");
                     }
                     else
                     {
@@ -72,8 +76,9 @@ namespace IdentityApp.Controllers
                 {
                     ModelState.AddModelError("", "Invalid email.");
                 }
-                    
+
             }
+
             return View(model);
         }
 
@@ -113,12 +118,13 @@ namespace IdentityApp.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
+
             return View(model);
         }
 
         public async Task<IActionResult> ConfirmEmail(string Id, string token)
         {
-            if(Id == null || token == null)
+            if (Id == null || token == null)
             {
                 TempData["Message"] = "Invalid token information.";
                 return View();
@@ -141,6 +147,7 @@ namespace IdentityApp.Controllers
                     return View();
                 }
             }
+
             TempData["Message"] = "User not found.";
             return View();
         }
@@ -150,5 +157,37 @@ namespace IdentityApp.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string Email)
+        {
+            if (string.IsNullOrEmpty(Email))
+            {
+                TempData["Message"] = "Please enter your email address.";
+                return View();
+            }
+            var user = await _userManager.FindByEmailAsync(Email);
+            
+            if(user == null)
+            {
+                TempData["Message"] = "User not found.";
+                return View();
+            }
+            
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var url = Url.Action("ResetPassword", "Account", new { user.Id, token });
+
+            await _emailSender.SendEmailAsync(Email, "Reset Password", $"Please reset your password by clicking <a href='{url}'>here</a>");
+            
+            TempData["Message"] = "Reset password email sent successfully.";
+            
+            return View();
+        }
     }
 }
+
